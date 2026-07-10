@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thư Gửi Trại Sinh</title>
+    <style>
+        /* Reset cơ bản */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /* Hình nền thiên nhiên/cắm trại */
+            background: linear-gradient(135deg, #a8e063, #56ab2f);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Màn hình chào mừng (Nút mở thư) --- */
+        .intro-screen {
+            position: absolute;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8) translateY(-50px);
+        }
+
+        .envelope-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+        }
+
+        .open-btn {
+            background-color: #ff7e5f;
+            background-image: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* --- Khu vực Bức thư --- */
+        .letter-wrapper {
+            position: relative;
+            width: 95%;
+            max-width: 900px; /* Vùng rộng rãi cho nội dung */
+            display: none; /* Ẩn ban đầu */
+            z-index: 10;
+        }
+
+        .letter-paper {
+            background-color: #fdfbf7;
+            background-image: repeating-linear-gradient(transparent, transparent 29px, #e1d8c9 30px);
+            padding: 50px 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid #d3c5b0;
+            opacity: 0;
+            transform: translateY(50px) rotate(-2deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .letter-wrapper.show .letter-paper {
+            opacity: 1;
+            transform: translateY(0) rotate(0);
+        }
+
+        /* Tùy chỉnh thanh cuộn cho bức thư */
+        .letter-paper::-webkit-scrollbar {
+            width: 8px;
+        }
+        .letter-paper::-webkit-scrollbar-thumb {
+            background-color: #8b5a2b;
+            border-radius: 10px;
+        }
+
+        .letter-title {
+            text-align: center;
+            color: #d35400;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
+            text-shadow: 1px 1px 0px rgba(255,255,255,1);
+        }
+
+        .letter-content {
+            font-size: 18px;
+            line-height: 30px; /* Căn chỉnh với đường kẻ ngang */
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        /* --- Thiết kế Sticker --- */
+        .sticker {
+            position: absolute;
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            font-size: 45px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 0 0 2px #f0f0f0;
+            border: 3px solid white;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 20;
+            cursor: grab;
+            user-select: none;
+        }
+
+        /* Sticker hover để tạo cảm giác sống động */
+        .sticker:hover {
+            transform: scale(1.15) rotate(0deg) !important;
+            z-index: 30;
+        }
+
+        /* Các vị trí của Sticker (Responsive) */
+        .st-1 { top: -30px; left: -20px; --rot: -15deg; transition-delay: 0.3s; } /* Balo */
+        .st-2 { top: 20%; right: -30px; --rot: 20deg; transition-delay: 0.5s; }  /* Lều */
+        .st-3 { bottom: -20px; left: 10%; --rot: -10deg; transition-delay: 0.7s; } /* Lửa trại */
+        .st-4 { bottom: 30%; left: -35px; --rot: -25deg; transition-delay: 0.9s; } /* La bàn */
+        .st-5 { top: -20px; right: 15%; --rot: 12deg; transition-delay: 0.4s; }  /* Đèn pin */
+        .st-6 { bottom: -25px; right: 5%; --rot: 18deg; transition-delay: 0.8s; }  /* Trại sinh */
+
+        /* Class kích hoạt sticker hiện ra */
+        .letter-wrapper.show .sticker {
+            opacity: 1;
+            transform: scale(1) rotate(var(--rot));
+        }
+
+        /* Responsive cho thiết bị di động */
+        @media (max-width: 768px) {
+            .sticker { font-size: 30px; padding: 5px; }
+            .st-1 { left: -10px; }
+            .st-2 { right: -10px; }
+            .st-4 { left: -15px; }
+            .letter-paper { padding: 30px 20px; }
+            .letter-title { font-size: 24px; }
+            .letter-content { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Màn hình chào mừng -->
+    <div class="intro-screen" id="introScreen">
+        <div class="envelope-icon">🏕️💌</div>
+        <button class="open-btn" id="openBtn">Mở Thư Trại Sinh</button>
+    </div>
+
+    <!-- Khu vực Bức thư và Sticker -->
+    <div class="letter-wrapper" id="letterWrapper">
+        
+        <!-- Các Sticker được định vị xung quanh -->
+        <div class="sticker st-1" title="Balo Hành Trang">🎒</div>
+        <div class="sticker st-2" title="Lều Trại">⛺</div>
+        <div class="sticker st-3" title="Lửa Trại Gắn Kết">🔥</div>
+        <div class="sticker st-4" title="La Bàn Định Hướng">🧭</div>
+        <div class="sticker st-5" title="Đèn Pin Khám Phá">🔦</div>
+        <div class="sticker st-6" title="Đồng Đội">🧑‍🤝‍🧑</div>
+
+        <!-- Nội dung bức thư -->
+        <!-- Nội dung bức thư chính -->
+        <div class="letter-paper">
+            <!-- 1. CHỈNH SỬA TIÊU ĐỀ THƯ TẠI ĐÂY -->
+            <h1 class="letter-title">THÔNG ĐIỆP TRẠI SINH 2026</h1>
+            
+            <!-- 2. CHỈNH SỬA NỘI DUNG CHI TIẾT TẠI ĐÂY -->
+            <div class="letter-content">Xin chào tất cả trại sinh của trại Đồng Hành 2026!
+
+Mỗi mùa hè đến, thứ chờ đón ta không đơn thuần chỉ là tiếng ve rộn ràng vào buổi trưa hè, hình ảnh những chiếc diều đầy đủ hình dáng bay vút cao trên nền trời xanh,... mà còn chính là những kì trại sôi động, nhiệt huyết và ý nghĩa đang chờ đón mỗi trại sinh GĐHĐ chúng ta. Trại Đồng Hành là một trong những kì trại để lại rất nhiều ấn tượng, là một phần khó thể quên trong các tháng hè, được các anh/chị đi trước tiếp nối qua suốt quãng đường hình thành và phát triển của GĐHĐ Trung Nam. Để tạo sân chơi lành mạnh, thắt chặt tình đoàn kết và rèn luyện kĩ năng cho các trại sinh đồng thời giữ cho ngọn lửa Hưng Đạo không dập tắt, để tinh thần hăng hái, nhiệt huyết không ngụi lạnh , ban quản trại xin thông báo tới tất cả trại sinh về trại Đồng Hành 2026!
+
+📌 <b>THÔNG TIN QUAN TRỌNG:</b>
+- ⏰ <b>Thời gian:</b> 05:00 , 25,26 tháng 07 năm 2026
+- 📍 <b>Địa điểm tập trung:</b> Khu du lịch Hồ Cốc , Xuyên Mộc
+- 🎯 <b>Chủ đề Trại:</b> "Vượt Giới Hạn - Chạm Đam Mê"
+
+🎒 <b>HÀNH TRANG BỎ TÚI (Không thể thiếu):</b>
+1. Đoàn Phục cho lễ Chào Cờ và Thường Phục cho các hoạt động vận động.
+2. Các vật dụng sinh hoạt cá nhân ( chén,đũa,khăn,áo mưa, đèn pin,.....)
+3. Cuối cùng, và quan trọng nhất: Một tinh thần rực cháy như <b>lửa trại</b>!
+
+Hãy chuẩn bị kỹ lưỡng những vật dụng có trong các "Sticker" xung quanh bức thư này nhé. Chúng ta sẽ có những đêm lửa trại tâm tình, những trò chơi lớn thử thách trí tuệ và thể lực.
+
+Hẹn gặp các bạn ở kì trại Đồng Hành 2026!
+
+Thân mến,
+<b>Ban Tổ Chức Trại</b></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openBtn = document.getElementById('openBtn');
+            const introScreen = document.getElementById('introScreen');
+            const letterWrapper = document.getElementById('letterWrapper');
+
+            openBtn.addEventListener('click', () => {
+                // 1. Ẩn màn hình intro
+                introScreen.classList.add('hidden');
+
+                // 2. Chờ một chút để intro mờ đi, sau đó hiện thư và sticker
+                setTimeout(() => {
+                    introScreen.style.display = 'none'; // Xóa hẳn khỏi layout
+                    letterWrapper.style.display = 'block'; // Hiển thị khối thư
+                    
+                    // Kích hoạt animation bằng cách thêm class 'show' sau 1 frame
+                    requestAnimationFrame(() => {
+                        letterWrapper.classList.add('show');
+                    });
+                }, 500); // 500ms khớp với thời gian transition CSS của intro-screen
+            });
+        });
+    </script>
+</body>
+</html>

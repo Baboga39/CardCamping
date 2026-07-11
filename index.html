@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thư Gửi Trại Sinh</title>
+    <!-- Thêm font chữ Nunito cực kỳ đáng yêu và hiện đại -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         /* Reset cơ bản */
         * {
@@ -13,15 +18,82 @@
         }
 
         body {
-            /* Hình nền thiên nhiên/cắm trại */
-            background: linear-gradient(135deg, #a8e063, #56ab2f);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* Hình nền rừng cắm trại xanh mướt cực lung linh */
+            background: linear-gradient(to bottom, #052e16 0%, #14532d 35%, #064e3b 70%, #022c22 100%);
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
             position: relative;
+            padding: 20px;
+        }
+
+        /* Hiệu ứng hạt đom đóm lơ lửng bay từ dưới lên trên */
+        .firefly {
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            background: #fef08a;
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 10px #fef08a, 0 0 20px #eab308;
+            pointer-events: none;
+            opacity: 0;
+            animation: drift var(--duration, 15s) infinite linear, flash 4s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateY(110vh) translateX(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(50vh) translateX(40px) rotate(180deg);
+            }
+
+            100% {
+                transform: translateY(-10vh) translateX(-10px) rotate(360deg);
+            }
+        }
+
+        @keyframes flash {
+
+            0%,
+            100% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        /* Hiệu ứng sao lấp lánh */
+        .star {
+            position: absolute;
+            width: var(--size);
+            height: var(--size);
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: twinkle var(--duration) infinite ease-in-out var(--delay);
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.1;
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
         }
 
         /* --- Màn hình chào mừng (Nút mở thư) --- */
@@ -32,6 +104,7 @@
             flex-direction: column;
             align-items: center;
             transition: opacity 0.5s ease, transform 0.5s ease;
+            text-align: center;
         }
 
         .intro-screen.hidden {
@@ -41,57 +114,74 @@
         }
 
         .envelope-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 100px;
+            margin-bottom: 25px;
             animation: bounce 2s infinite;
-            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.2));
+            filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.4));
         }
 
         .open-btn {
-            background-color: #ff7e5f;
-            background-image: linear-gradient(to right, #ff7e5f 0%, #feb47b 100%);
+            background: linear-gradient(135deg, #f97316, #ea580c);
             color: white;
             border: none;
-            padding: 15px 40px;
+            padding: 18px 45px;
             font-size: 22px;
-            font-weight: bold;
+            font-weight: 900;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(234, 88, 12, 0.4), inset 0 -4px 0px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
         }
 
         .open-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(234, 88, 12, 0.5), inset 0 -4px 0px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-25px);
+            }
+
+            60% {
+                transform: translateY(-12px);
+            }
         }
 
         /* --- Khu vực Bức thư --- */
         .letter-wrapper {
             position: relative;
             width: 95%;
-            max-width: 900px; /* Vùng rộng rãi cho nội dung */
-            display: none; /* Ẩn ban đầu */
+            max-width: 800px;
+            /* Thu hẹp lại một chút để cân đối */
+            display: none;
+            /* Ẩn ban đầu */
             z-index: 10;
         }
 
         .letter-paper {
             background-color: #fdfbf7;
-            background-image: repeating-linear-gradient(transparent, transparent 29px, #e1d8c9 30px);
-            padding: 50px 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            border: 1px solid #d3c5b0;
+            background-image: repeating-linear-gradient(transparent, transparent 29px, #e8dfd3 30px);
+            padding: 50px 45px;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            border: 6px solid #8b5a2b;
+            /* Viền gỗ đậm đà cắm trại */
+            outline: 3px solid white;
+            outline-offset: -9px;
             opacity: 0;
-            transform: translateY(50px) rotate(-2deg);
+            transform: translateY(50px) rotate(-1.5deg);
             transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             max-height: 85vh;
             overflow-y: auto;
@@ -104,81 +194,388 @@
 
         /* Tùy chỉnh thanh cuộn cho bức thư */
         .letter-paper::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
+
+        .letter-paper::-webkit-scrollbar-track {
+            background: #f1ebd9;
+            border-radius: 10px;
+            margin: 15px;
+        }
+
         .letter-paper::-webkit-scrollbar-thumb {
             background-color: #8b5a2b;
             border-radius: 10px;
+            border: 2px solid #fdfbf7;
         }
 
         .letter-title {
             text-align: center;
-            color: #d35400;
-            font-size: 32px;
-            margin-bottom: 30px;
+            color: #c2410c;
+            font-size: 30px;
+            margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 900;
-            text-shadow: 1px 1px 0px rgba(255,255,255,1);
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 1);
         }
 
         .letter-content {
-            font-size: 18px;
-            line-height: 30px; /* Căn chỉnh với đường kẻ ngang */
-            color: #333;
+            font-size: 17px;
+            line-height: 30px;
+            /* Căn chỉnh với đường kẻ ngang */
+            color: #334155;
             white-space: pre-wrap;
+            font-weight: 600;
         }
 
-        /* --- Thiết kế Sticker --- */
+        .letter-content b {
+            color: #b45309;
+            font-weight: 800;
+        }
+
+        /* --- Thiết kế Sticker (Huy hiệu Hướng đạo sinh hình tròn cực xịn) --- */
+        .stickers-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 20;
+        }
+
         .sticker {
             position: absolute;
             background: white;
-            padding: 10px;
-            border-radius: 20px;
-            font-size: 45px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2), inset 0 0 0 2px #f0f0f0;
-            border: 3px solid white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            font-size: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 0 0 3px #f5ebd5;
+            border: 3px solid #8b5a2b;
             opacity: 0;
             transform: scale(0);
             transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 20;
             cursor: grab;
             user-select: none;
+            pointer-events: auto;
         }
 
-        /* Sticker hover để tạo cảm giác sống động */
+        /* Sticker hover sinh động */
         .sticker:hover {
-            transform: scale(1.15) rotate(0deg) !important;
+            transform: scale(1.2) rotate(0deg) !important;
             z-index: 30;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 0 0 3px #f5ebd5;
         }
 
-        /* Các vị trí của Sticker (Responsive) */
-        .st-1 { top: -30px; left: -20px; --rot: -15deg; transition-delay: 0.3s; } /* Balo */
-        .st-2 { top: 20%; right: -30px; --rot: 20deg; transition-delay: 0.5s; }  /* Lều */
-        .st-3 { bottom: -20px; left: 10%; --rot: -10deg; transition-delay: 0.7s; } /* Lửa trại */
-        .st-4 { bottom: 30%; left: -35px; --rot: -25deg; transition-delay: 0.9s; } /* La bàn */
-        .st-5 { top: -20px; right: 15%; --rot: 12deg; transition-delay: 0.4s; }  /* Đèn pin */
-        .st-6 { bottom: -25px; right: 5%; --rot: 18deg; transition-delay: 0.8s; }  /* Trại sinh */
+        /* Vị trí các Sticker trên desktop (Không đè chữ nhờ viền ngoài) */
+        .st-1 {
+            top: -25px;
+            left: -35px;
+            --rot: -12deg;
+            transition-delay: 0.3s;
+        }
 
-        /* Class kích hoạt sticker hiện ra */
+        /* Balo */
+        .st-2 {
+            top: 20%;
+            right: -35px;
+            --rot: 15deg;
+            transition-delay: 0.5s;
+        }
+
+        /* Lều */
+        .st-3 {
+            bottom: -20px;
+            left: 15%;
+            --rot: -8deg;
+            transition-delay: 0.7s;
+        }
+
+        /* Lửa trại */
+        .st-4 {
+            bottom: 35%;
+            left: -40px;
+            --rot: -20deg;
+            transition-delay: 0.9s;
+        }
+
+        /* La bàn */
+        .st-5 {
+            top: -30px;
+            right: 15%;
+            --rot: 10deg;
+            transition-delay: 0.4s;
+        }
+
+        /* Đèn pin */
+        .st-6 {
+            bottom: -25px;
+            right: 15%;
+            --rot: 18deg;
+            transition-delay: 0.8s;
+        }
+
+        /* Đồng đội */
+
         .letter-wrapper.show .sticker {
             opacity: 1;
             transform: scale(1) rotate(var(--rot));
         }
 
-        /* Responsive cho thiết bị di động */
-        @media (max-width: 768px) {
-            .sticker { font-size: 30px; padding: 5px; }
-            .st-1 { left: -10px; }
-            .st-2 { right: -10px; }
-            .st-4 { left: -15px; }
-            .letter-paper { padding: 30px 20px; }
-            .letter-title { font-size: 24px; }
-            .letter-content { font-size: 16px; }
+        /* --- RSVP Section (Lựa chọn tham gia) --- */
+        .rsvp-section {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 3px dashed #e2d7c5;
+            text-align: center;
+        }
+
+        .rsvp-question {
+            font-size: 20px;
+            font-weight: 900;
+            color: #c2410c;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 0 white;
+        }
+
+        .rsvp-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-height: 60px;
+            position: relative;
+        }
+
+        .rsvp-btn {
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-join {
+            background: linear-gradient(135deg, #22c55e, #15803d);
+            color: white;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-join:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-decline {
+            background: #cbd5e1;
+            color: #475569;
+            z-index: 100;
+            /* Thêm transition cho top/left để khi chạy trốn sẽ trượt mượt mà thay vì giật cục */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.35s cubic-bezier(0.25, 1, 0.5, 1), left 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .btn-decline:hover {
+            background: #b91c1c;
+            color: white;
+            box-shadow: 0 6px 20px rgba(185, 28, 28, 0.4);
+        }
+
+        /* --- Canvas Pháo hoa --- */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        /* --- Hộp thoại thành công (Success Modal) --- */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .success-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 28px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 0 0 6px #f0fdf4;
+            border: 4px solid #22c55e;
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 70px;
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .modal-content h2 {
+            color: #166534;
+            font-size: 26px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .modal-content p {
+            color: #475569;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .close-modal-btn {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            font-size: 16px;
+            font-weight: 800;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s;
+        }
+
+        .close-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        /* --- Responsive cho thiết bị di động & Tablet --- */
+        @media (max-width: 860px) {
+            body {
+                padding: 15px;
+            }
+
+            .letter-wrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .letter-paper {
+                padding: 35px 25px;
+                border-width: 4px;
+                outline-width: 2px;
+                outline-offset: -6px;
+                width: 100%;
+            }
+
+            .letter-title {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .letter-content {
+                font-size: 15px;
+                line-height: 28px;
+            }
+
+            /* Đưa sticker thành một hàng ngang dễ thương ở trên tấm thiệp, không đè chữ */
+            .stickers-container {
+                position: relative !important;
+                display: flex !important;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+                width: 100%;
+                margin-bottom: 20px;
+                z-index: 25;
+                pointer-events: auto !important;
+                height: auto !important;
+            }
+
+            .sticker {
+                position: relative !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: scale(1) rotate(0deg) !important;
+                opacity: 1 !important;
+                width: 52px !important;
+                height: 52px !important;
+                font-size: 28px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: flex !important;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 0 0 2px #f5ebd5;
+                border-width: 2px;
+            }
+
+            .rsvp-buttons {
+                flex-direction: column;
+                gap: 15px;
+                min-height: 120px;
+            }
+
+            .rsvp-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
+
 <body>
+
+    <!-- Canvas Pháo Hoa -->
+    <canvas id="fireworksCanvas"></canvas>
 
     <!-- Màn hình chào mừng -->
     <div class="intro-screen" id="introScreen">
@@ -188,42 +585,69 @@
 
     <!-- Khu vực Bức thư và Sticker -->
     <div class="letter-wrapper" id="letterWrapper">
-        
-        <!-- Các Sticker được định vị xung quanh -->
-        <div class="sticker st-1" title="Balo Hành Trang">🎒</div>
-        <div class="sticker st-2" title="Lều Trại">⛺</div>
-        <div class="sticker st-3" title="Lửa Trại Gắn Kết">🔥</div>
-        <div class="sticker st-4" title="La Bàn Định Hướng">🧭</div>
-        <div class="sticker st-5" title="Đèn Pin Khám Phá">🔦</div>
-        <div class="sticker st-6" title="Đồng Đội">🧑‍🤝‍🧑</div>
+
+        <!-- Các Sticker hình tròn dạng huy hiệu cắm trại bao quanh -->
+        <div class="stickers-container">
+            <div class="sticker st-1" title="Balo Hành Trang">🎒</div>
+            <div class="sticker st-2" title="Lều Trại">⛺</div>
+            <div class="sticker st-3" title="Lửa Trại Gắn Kết">🔥</div>
+            <div class="sticker st-4" title="La Bàn Định Hướng">🧭</div>
+            <div class="sticker st-5" title="Đèn Pin Khám Phá">🔦</div>
+            <div class="sticker st-6" title="Đồng Đội">🧑‍🤝‍🧑</div>
+        </div>
 
         <!-- Nội dung bức thư -->
-        <!-- Nội dung bức thư chính -->
         <div class="letter-paper">
-            <!-- 1. CHỈNH SỬA TIÊU ĐỀ THƯ TẠI ĐÂY -->
             <h1 class="letter-title">THÔNG ĐIỆP TRẠI SINH 2026</h1>
-            
-            <!-- 2. CHỈNH SỬA NỘI DUNG CHI TIẾT TẠI ĐÂY -->
+
             <div class="letter-content">Xin chào tất cả trại sinh của trại Đồng Hành 2026!
 
-Mỗi mùa hè đến, thứ chờ đón ta không đơn thuần chỉ là tiếng ve rộn ràng vào buổi trưa hè, hình ảnh những chiếc diều đầy đủ hình dáng bay vút cao trên nền trời xanh,... mà còn chính là những kì trại sôi động, nhiệt huyết và ý nghĩa đang chờ đón mỗi trại sinh GĐHĐ chúng ta. Trại Đồng Hành là một trong những kì trại để lại rất nhiều ấn tượng, là một phần khó thể quên trong các tháng hè, được các anh/chị đi trước tiếp nối qua suốt quãng đường hình thành và phát triển của GĐHĐ Trung Nam. Để tạo sân chơi lành mạnh, thắt chặt tình đoàn kết và rèn luyện kĩ năng cho các trại sinh đồng thời giữ cho ngọn lửa Hưng Đạo không dập tắt, để tinh thần hăng hái, nhiệt huyết không ngụi lạnh , ban quản trại xin thông báo tới tất cả trại sinh về trại Đồng Hành 2026!
+                Mỗi mùa hè đến, thứ chờ đón ta không đơn thuần chỉ là tiếng ve rộn ràng vào buổi trưa hè, hình ảnh những
+                chiếc diều đầy đủ hình dáng bay vút cao trên nền trời xanh,... mà còn chính là những kì trại sôi động,
+                nhiệt huyết và ý nghĩa đang chờ đón mỗi trại sinh GĐHĐ chúng ta. Trại Đồng Hành là một trong những kì
+                trại để lại rất nhiều ấn tượng, là một phần khó thể quên trong các tháng hè, được các anh/chị đi trước
+                tiếp nối qua suốt quãng đường hình thành và phát triển của GĐHĐ Trung Nam. Để tạo sân chơi lành mạnh,
+                thắt chặt tình đoàn kết và rèn luyện kĩ năng cho các trại sinh đồng thời giữ cho ngọn lửa Hưng Đạo không
+                dập tắt, để tinh thần hăng hái, nhiệt huyết không ngụi lạnh , ban quản trại xin thông báo tới tất cả
+                trại sinh về trại Đồng Hành 2026!
 
-📌 <b>THÔNG TIN QUAN TRỌNG:</b>
-- ⏰ <b>Thời gian:</b> 05:00 , 25,26 tháng 07 năm 2026
-- 📍 <b>Địa điểm tập trung:</b> Khu du lịch Hồ Cốc , Xuyên Mộc
-- 🎯 <b>Chủ đề Trại:</b> "Vượt Giới Hạn - Chạm Đam Mê"
+                📌 <b>THÔNG TIN QUAN TRỌNG:</b>
+                - ⏰ <b>Thời gian:</b> 05:00 , 25,26 tháng 07 năm 2026
+                - 📍 <b>Địa điểm tập trung:</b> Khu du lịch Hồ Cốc , Xuyên Mộc
+                - 🎯 <b>Chủ đề Trại:</b> "Vượt Giới Hạn - Chạm Đam Mê"
 
-🎒 <b>HÀNH TRANG BỎ TÚI (Không thể thiếu):</b>
-1. Đoàn Phục cho lễ Chào Cờ và Thường Phục cho các hoạt động vận động.
-2. Các vật dụng sinh hoạt cá nhân ( chén,đũa,khăn,áo mưa, đèn pin,.....)
-3. Cuối cùng, và quan trọng nhất: Một tinh thần rực cháy như <b>lửa trại</b>!
+                🎒 <b>HÀNH TRANG BỎ TÚI (Không thể thiếu):</b>
+                1. Đoàn Phục cho lễ Chào Cờ và Thường Phục cho các hoạt động vận động.
+                2. Các vật dụng sinh hoạt cá nhân ( chén,đũa,khăn,áo mưa, đèn pin,.....)
+                3. Cuối cùng, và quan trọng nhất: Một tinh thần rực cháy như <b>lửa trại</b>!
 
-Hãy chuẩn bị kỹ lưỡng những vật dụng có trong các "Sticker" xung quanh bức thư này nhé. Chúng ta sẽ có những đêm lửa trại tâm tình, những trò chơi lớn thử thách trí tuệ và thể lực.
+                Hãy chuẩn bị kỹ lưỡng những vật dụng có trong các "Sticker" xung quanh bức thư này nhé. Chúng ta sẽ có
+                những đêm lửa trại tâm tình, những trò chơi lớn thử thách trí tuệ và thể lực.
 
-Hẹn gặp các bạn ở kì trại Đồng Hành 2026!
+                Hẹn gặp các bạn ở kì trại Đồng Hành 2026!
 
-Thân mến,
-<b>Ban Tổ Chức Trại</b></div>
+                Thân mến,
+                <b>Ban Tổ Chức Trại</b>
+            </div>
+
+            <!-- Khu vực RSVP phản hồi -->
+            <div class="rsvp-section">
+                <p class="rsvp-question">Bạn sẽ tham gia cùng chúng mình chứ? ✨</p>
+                <div class="rsvp-buttons">
+                    <button class="rsvp-btn btn-join" id="btnJoin">Tham gia ngay! 🌟</button>
+                    <button class="rsvp-btn btn-decline" id="btnDecline">Không tham gia 😢</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hộp thoại Thành công -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">⛺🔥</div>
+            <h2>Đăng Ký Thành Công!</h2>
+            <p>Cảm ơn bạn đã tham gia. Hẹn gặp bạn ở kì trại Đồng Hành 2026 với ngọn lửa nhiệt huyết rực cháy! 🔥🏆</p>
+            <button class="close-modal-btn" id="closeModalBtn">Tuyệt vời! 👍</button>
         </div>
     </div>
 
@@ -232,23 +656,282 @@ Thân mến,
             const openBtn = document.getElementById('openBtn');
             const introScreen = document.getElementById('introScreen');
             const letterWrapper = document.getElementById('letterWrapper');
+            const btnJoin = document.getElementById('btnJoin');
+            const btnDecline = document.getElementById('btnDecline');
+            const successModal = document.getElementById('successModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
 
+            // --- Hiệu ứng nền: Tạo sao lấp lánh và đom đóm ---
+            function initBackground() {
+                const body = document.body;
+
+                // Tạo 40 ngôi sao trên trời cao
+                for (let i = 0; i < 40; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 70 + 'vh'; // Tập trung ở phía trên
+                    star.style.setProperty('--delay', Math.random() * 5 + 's');
+                    star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                    star.style.setProperty('--size', (Math.random() * 2 + 1) + 'px');
+                    body.appendChild(star);
+                }
+
+                // Tạo 15 đom đóm bay lượn từ dưới lên trên
+                for (let i = 0; i < 15; i++) {
+                    const firefly = document.createElement('div');
+                    firefly.className = 'firefly';
+                    firefly.style.left = Math.random() * 95 + 'vw';
+                    firefly.style.top = '0px'; // Bắt đầu ở 0 để translateY hoạt động chính xác
+                    // Delay âm giúp các đom đóm xuất hiện ngẫu nhiên trên màn hình ngay khi tải trang
+                    const delay = -Math.random() * 20;
+                    const duration = Math.random() * 12 + 10;
+                    firefly.style.animationDelay = `${delay}s`;
+                    firefly.style.setProperty('--duration', `${duration}s`);
+                    firefly.style.setProperty('--size', (Math.random() * 4 + 3) + 'px');
+                    body.appendChild(firefly);
+                }
+            }
+            initBackground();
+
+            // Mở thư
             openBtn.addEventListener('click', () => {
-                // 1. Ẩn màn hình intro
                 introScreen.classList.add('hidden');
-
-                // 2. Chờ một chút để intro mờ đi, sau đó hiện thư và sticker
                 setTimeout(() => {
-                    introScreen.style.display = 'none'; // Xóa hẳn khỏi layout
-                    letterWrapper.style.display = 'block'; // Hiển thị khối thư
-                    
-                    // Kích hoạt animation bằng cách thêm class 'show' sau 1 frame
+                    introScreen.style.display = 'none';
+                    letterWrapper.style.display = 'block';
                     requestAnimationFrame(() => {
                         letterWrapper.classList.add('show');
                     });
-                }, 500); // 500ms khớp với thời gian transition CSS của intro-screen
+                }, 500);
+            });
+
+            // Lưu lại container gốc để có thể khôi phục lại khi cần
+            const rsvpButtonsContainer = document.querySelector('.rsvp-buttons');
+
+            // --- Nút "Không tham gia" chạy trốn cực troll (Chạy xung quanh background của trang) ---
+            function escapeDeclineButton(e) {
+                // Đưa nút ra trực tiếp body để không bị giới hạn bởi transform/overflow của card và luôn nổi lên cao nhất
+                if (btnDecline.parentElement !== document.body) {
+                    const rect = btnDecline.getBoundingClientRect();
+                    // Đặt vị trí fixed tại đúng chỗ cũ trước khi chuyển DOM để tránh dịch chuyển giật cục
+                    btnDecline.style.position = 'fixed';
+                    btnDecline.style.left = `${rect.left}px`;
+                    btnDecline.style.top = `${rect.top}px`;
+                    
+                    document.body.appendChild(btnDecline);
+                    
+                    // Cho trình duyệt render lại vị trí fixed cũ rồi mới trượt đi ở frame tiếp theo
+                    requestAnimationFrame(() => {
+                        moveToRandomPosition();
+                    });
+                } else {
+                    moveToRandomPosition();
+                }
+            }
+
+            function moveToRandomPosition() {
+                const btnWidth = btnDecline.offsetWidth;
+                const btnHeight = btnDecline.offsetHeight;
+                const margin = 50;
+
+                const maxX = window.innerWidth - btnWidth - margin;
+                const maxY = window.innerHeight - btnHeight - margin;
+
+                const randomX = Math.max(margin, Math.floor(Math.random() * (maxX - margin) + margin));
+                const randomY = Math.max(margin, Math.floor(Math.random() * (maxY - margin) + margin));
+
+                btnDecline.style.position = 'fixed';
+                btnDecline.style.left = `${randomX}px`;
+                btnDecline.style.top = `${randomY}px`;
+                btnDecline.style.zIndex = '9998'; // Nổi trên cùng nền và thiệp (dưới modal một chút)
+            }
+
+            btnDecline.addEventListener('mouseover', escapeDeclineButton);
+            btnDecline.addEventListener('touchstart', (e) => {
+                e.preventDefault(); // Ngăn kích hoạt click trên điện thoại
+                escapeDeclineButton();
+            });
+
+            // --- Hệ thống Pháo hoa Canvas ---
+            const canvas = document.getElementById('fireworksCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let fireworksQueue = [];
+            let isFireworksRunning = false;
+            let fireworksInterval = null;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.color = color;
+                    this.radius = Math.random() * 3 + 1;
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 6 + 2;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.gravity = 0.08;
+                    this.alpha = 1;
+                    this.decay = Math.random() * 0.015 + 0.01;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.vy += this.gravity;
+                    this.y += this.vy;
+                    this.alpha -= this.decay;
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.alpha;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            class FireworkRocket {
+                constructor(startX, startY, targetX, targetY, color) {
+                    this.x = startX;
+                    this.y = startY;
+                    this.targetX = targetX;
+                    this.targetY = targetY;
+                    this.color = color;
+                    this.speed = 10;
+                    const angle = Math.atan2(targetY - startY, targetX - startX);
+                    this.vx = Math.cos(angle) * this.speed;
+                    this.vy = Math.sin(angle) * this.speed;
+                    this.distanceToTarget = Math.hypot(targetX - startX, targetY - startY);
+                    this.distanceTraveled = 0;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.distanceTraveled += this.speed;
+                    return this.distanceTraveled >= this.distanceToTarget;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = this.color;
+                    ctx.fill();
+                }
+            }
+
+            function spawnFirework() {
+                const startX = Math.random() * canvas.width;
+                const startY = canvas.height;
+                const targetX = Math.random() * canvas.width;
+                // Bắn lên cao hơn (từ 15% đến 55% chiều cao màn hình từ trên xuống)
+                const targetY = Math.random() * (canvas.height * 0.4) + (canvas.height * 0.15);
+                const colors = ['#f43f5e', '#fbbf24', '#34d399', '#60a5fa', '#ec4899', '#a855f7', '#fb923c'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+
+                fireworksQueue.push(new FireworkRocket(startX, startY, targetX, targetY, color));
+            }
+
+            function createExplosion(x, y, color) {
+                for (let i = 0; i < 70; i++) {
+                    particles.push(new Particle(x, y, color));
+                }
+            }
+
+            function animateFireworks() {
+                if (!isFireworksRunning) return;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Cập nhật tên lửa pháo hoa bay lên
+                for (let i = fireworksQueue.length - 1; i >= 0; i--) {
+                    const fw = fireworksQueue[i];
+                    const exploded = fw.update();
+                    if (exploded) {
+                        createExplosion(fw.targetX, fw.targetY, fw.color);
+                        fireworksQueue.splice(i, 1);
+                    } else {
+                        fw.draw();
+                    }
+                }
+
+                // Cập nhật các hạt tàn pháo rơi xuống
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    const p = particles[i];
+                    p.update();
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                    } else {
+                        p.draw();
+                    }
+                }
+
+                requestAnimationFrame(animateFireworks);
+            }
+
+            function startFireworksEffect() {
+                canvas.style.display = 'block';
+                isFireworksRunning = true;
+                animateFireworks();
+
+                // Bắn pháo hoa ngay lập tức
+                spawnFirework();
+                spawnFirework();
+
+                // Bắn liên tục mỗi 400ms
+                fireworksInterval = setInterval(spawnFirework, 400);
+            }
+
+            function stopFireworksEffect() {
+                clearInterval(fireworksInterval);
+                setTimeout(() => {
+                    isFireworksRunning = false;
+                    canvas.style.display = 'none';
+                    particles = [];
+                    fireworksQueue = [];
+                }, 1500); // Đợi các tàn pháo biến mất hẳn
+            }
+
+            // --- Xử lý sự kiện click Tham Gia ---
+            btnJoin.addEventListener('click', () => {
+                // 1. Kích hoạt pháo hoa
+                startFireworksEffect();
+
+                // 2. Mở Hộp thoại chúc mừng thành công
+                successModal.classList.add('show');
+            });
+
+            // Đóng hộp thoại thành công
+            closeModalBtn.addEventListener('click', () => {
+                successModal.classList.remove('show');
+                stopFireworksEffect();
+
+                // Trả nút Decline về container gốc của nó và reset style
+                if (btnDecline.parentElement !== rsvpButtonsContainer) {
+                    rsvpButtonsContainer.appendChild(btnDecline);
+                }
+                btnDecline.style.position = 'relative';
+                btnDecline.style.left = 'auto';
+                btnDecline.style.top = 'auto';
+                btnDecline.style.zIndex = '100';
             });
         });
     </script>
 </body>
+
 </html>

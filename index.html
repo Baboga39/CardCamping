@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thư Gửi Trại Sinh</title>
     <!-- Thêm font chữ Nunito cực kỳ đáng yêu và hiện đại -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* Reset cơ bản */
         * {
@@ -20,7 +20,7 @@
         body {
             /* Hình nền rừng cắm trại xanh mướt cực lung linh */
             background: linear-gradient(to bottom, #052e16 0%, #14532d 35%, #064e3b 70%, #022c22 100%);
-            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -29,6 +29,10 @@
             position: relative;
             padding: 20px;
         }
+        .open-btn{
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-weight:800;
+}
 
         /* Hiệu ứng hạt đom đóm lơ lửng bay từ dưới lên trên */
         .firefly {
@@ -225,9 +229,19 @@
             line-height: 30px;
             /* Căn chỉnh với đường kẻ ngang */
             color: #334155;
-            white-space: pre-wrap;
             font-weight: 600;
         }
+        .letter-content p {
+    margin: 10px 0;
+}
+
+.letter-content p:first-child {
+    margin-top: 0;
+}
+
+.letter-content p:last-child {
+    margin-bottom: 0;
+}
 
         .letter-content b {
             color: #b45309;
@@ -580,7 +594,7 @@
     <!-- Màn hình chào mừng -->
     <div class="intro-screen" id="introScreen">
         <div class="envelope-icon">🏕️💌</div>
-        <button class="open-btn" id="openBtn">Mở Thư Trại Sinh</button>
+        <button class="open-btn" id="openBtn">Thư gửi trại sinh</button>
     </div>
 
     <!-- Khu vực Bức thư và Sticker -->
@@ -599,36 +613,67 @@
         <!-- Nội dung bức thư -->
         <div class="letter-paper">
             <h1 class="letter-title">THÔNG ĐIỆP TRẠI SINH 2026</h1>
+<div class="letter-content">
+    <p>Xin chào tất cả trại sinh của Trại Đồng Hành 2026!</p>
 
-            <div class="letter-content">Xin chào tất cả trại sinh của trại Đồng Hành 2026!
+    <p>
+        Mỗi mùa hè đến, thứ chờ đón ta không đơn thuần chỉ là tiếng ve rộn ràng vào buổi trưa hè,
+        hình ảnh những chiếc diều đủ hình dáng bay vút cao trên nền trời xanh,... mà còn chính là
+        những kì trại sôi động, nhiệt huyết và ý nghĩa đang chờ đón mỗi trại sinh GĐHĐ chúng ta.
+    </p>
 
-                Mỗi mùa hè đến, thứ chờ đón ta không đơn thuần chỉ là tiếng ve rộn ràng vào buổi trưa hè, hình ảnh những
-                chiếc diều đầy đủ hình dáng bay vút cao trên nền trời xanh,... mà còn chính là những kì trại sôi động,
-                nhiệt huyết và ý nghĩa đang chờ đón mỗi trại sinh GĐHĐ chúng ta. Trại Đồng Hành là một trong những kì
-                trại để lại rất nhiều ấn tượng, là một phần khó thể quên trong các tháng hè, được các anh/chị đi trước
-                tiếp nối qua suốt quãng đường hình thành và phát triển của GĐHĐ Trung Nam. Để tạo sân chơi lành mạnh,
-                thắt chặt tình đoàn kết và rèn luyện kĩ năng cho các trại sinh đồng thời giữ cho ngọn lửa Hưng Đạo không
-                dập tắt, để tinh thần hăng hái, nhiệt huyết không ngụi lạnh , ban quản trại xin thông báo tới tất cả
-                trại sinh về trại Đồng Hành 2026!
+    <p>
+        Trại Đồng Hành trước đây là trại truyền thống của GĐHĐ Trung Nam, được các anh, các chị đi
+        trước tổ chức hằng năm. Với mục đích tạo sân chơi lành mạnh, bổ ích cho các bạn Thanh sinh,
+        Thiếu sinh trong hè, đồng thời cũng là cơ hội để các bạn Thanh sinh thể hiện tài năng, bản
+        lĩnh trong việc tổ chức kì trại và thực hành những kĩ năng đã được trau dồi, rèn luyện trong
+        chặng đường tu học vừa qua.
+    </p>
 
-                📌 <b>THÔNG TIN QUAN TRỌNG:</b>
-                - ⏰ <b>Thời gian:</b> 05:00 , 25,26 tháng 07 năm 2026
-                - 📍 <b>Địa điểm tập trung:</b> Khu du lịch Hồ Cốc , Xuyên Mộc
-                - 🎯 <b>Chủ đề Trại:</b> "Vượt Giới Hạn - Chạm Đam Mê"
+    <p>
+        Trại lần này là dịp để kỷ niệm và chào đón sinh nhật lần thứ <b>11</b> của
+        <b>Thanh Đoàn Thanh Long</b> (02/08/2015 – 02/08/2026).
+    </p>
 
-                🎒 <b>HÀNH TRANG BỎ TÚI (Không thể thiếu):</b>
-                1. Đoàn Phục cho lễ Chào Cờ và Thường Phục cho các hoạt động vận động.
-                2. Các vật dụng sinh hoạt cá nhân ( chén,đũa,khăn,áo mưa, đèn pin,.....)
-                3. Cuối cùng, và quan trọng nhất: Một tinh thần rực cháy như <b>lửa trại</b>!
+    <p>
+        Đến với Trại Đồng Hành, các bạn có thể thỏa sức đam mê, tự tin sáng tạo và hòa mình vào sự
+        sôi động, náo nhiệt của kì trại để có những kỉ niệm thật đẹp trong mùa hè này trước khi bước
+        vào năm học mới với thật nhiều năng lượng.
+    </p>
 
-                Hãy chuẩn bị kỹ lưỡng những vật dụng có trong các "Sticker" xung quanh bức thư này nhé. Chúng ta sẽ có
-                những đêm lửa trại tâm tình, những trò chơi lớn thử thách trí tuệ và thể lực.
+    <p>
+        Ban Quản Trại xin trân trọng thông báo đến tất cả trại sinh về <b>Trại Đồng Hành 2026!</b>
+    </p>
 
-                Hẹn gặp các bạn ở kì trại Đồng Hành 2026!
+    <p>
+        📌 <b>THÔNG TIN QUAN TRỌNG:</b><br><br>
 
-                Thân mến,
-                <b>Ban Tổ Chức Trại</b>
-            </div>
+        ⏰ <b>Thời gian:</b> 05:00, ngày 25–26/07/2026<br>
+        📍 <b>Địa điểm tập trung:</b> Thánh Thất Trung Nam<br>
+        🎯 <b>Chủ đề:</b> "Vượt Giới Hạn - Chạm Đam Mê"
+    </p>
+
+    <p>
+        🎒 <b>HÀNH TRANG BỎ TÚI (Không thể thiếu):</b><br><br>
+
+        1. Đoàn phục cho lễ Chào cờ và thường phục <b>(tối màu)</b> cho các hoạt động vận động.<br>
+        2. Các vật dụng sinh hoạt cá nhân (chén, đũa, khăn, áo mưa, đèn pin,...).<br>
+        3. Quan trọng nhất: Một tinh thần rực cháy như <b>lửa trại</b>!
+    </p>
+
+    <p>
+        Hãy chuẩn bị kỹ lưỡng những vật dụng có trong các sticker xung quanh bức thư này nhé.
+        Chúng ta sẽ có những đêm lửa trại tâm tình, những trò chơi lớn thử thách trí tuệ và thể lực.
+    </p>
+
+    <p>Hẹn gặp các bạn ở kì Trại Đồng Hành 2026!</p>
+
+    <p>
+        Thân mến,<br>
+        <b>Ban Tổ Chức Trại</b>
+    </p>
+</div>
+           
 
             <!-- Khu vực RSVP phản hồi -->
             <div class="rsvp-section">
